@@ -1,0 +1,23 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+{% block title %}Пост: "{{ post.title }}"{% endblock title %}
+
+
+{% block content %}
+<table>
+    <tr>
+        <td>Автор</td>
+        <td>Дата публикации</td>
+        <td>Заголовок</td>
+        <td>Содержание</td>
+    </tr>
+    <tr>
+        <td>{{ post.author.user.username }}</td>
+        <td>{{ post.time_publication|date:"d E Y" }}</td>
+        <td>{{ post.title }}</td>
+        <td>{{ post.text|censor }}</td>
+    </tr>
+</table>
+{% endblock content %}
