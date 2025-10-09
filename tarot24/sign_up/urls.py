@@ -1,7 +1,7 @@
 from django.contrib.auth.views import LoginView, LogoutView,TemplateView
 from django.urls import path, include
 
-from .views import SignupView
+from .views import SignupView, upgrade_me
 
 
 urlpatterns = [
@@ -10,4 +10,6 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path('confirm/logout/', TemplateView.as_view(template_name='sign_up/logout.html'), name='confirm_logout'),
     path('accounts/', include('allauth.urls')),
+    path('upgrade/', upgrade_me, name='upgrade')
+
 ]

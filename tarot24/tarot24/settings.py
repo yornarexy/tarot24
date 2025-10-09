@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -141,7 +145,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-LOGIN_URL = 'login'
+LOGIN_URL = 'account_login'
 LOGIN_REDIRECT_URL = 'post_list'
 LOGOUT_REDIRECT_URL = 'post_list'
 
@@ -159,7 +163,17 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_LOGIN_METHODS = {'username', 'email'}
 ACCOUNT_SESSION_REMEMBER = True
-
-ACCOUNT_FORMS = {'sign_up': 'sign_up.forms.MyCustomSignupForm'}
+ACCOUNT_FORMS = {'sign_up': 'sign_up.forms.MyCustomSignupForm',
+                 'sign_up': 'sign.models.BasicSignupForm'}
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': os.getenv('GOOGLE_CLIENT'),
+            'secret': os.getenv('GOOGLE_SECRET'),
+            'key': ''
+        }
+    }
+}
