@@ -1,11 +1,10 @@
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views.generic import TemplateView
 from .models import Post
 from .forms import PostForm
 from .filters import PostFilter
-
 
 class PostsList(ListView):
     model = Post
@@ -31,7 +30,7 @@ class PostDetail(DetailView):
     context_object_name = 'post'
 
 
-class PostCreate(CreateView):
+class PostCreate(PermissionRequiredMixin, CreateView):
     form_class = PostForm
     model = Post
     template_name = 'portal/post_edit.html'
@@ -47,6 +46,18 @@ class PostCreate(CreateView):
             post.post_type = 'AR'
             post.save()
         return super().form_valid(form)
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        group_subscribers = request_object('subscribers')
+        subscribers_users = group_subscribers.user_set.values_list('email', flat=True)
+        send_mail(
+            subject="Уведомления по подписке!",
+            message="Появилась новая публикация на портале Таро-24",
+            from_email="server@server.ru",
+            recipient_list=subscribers_users,
+        )
+        return response
 
 class PostUpdate(LoginRequiredMixin, UpdateView):
     form_class = PostForm

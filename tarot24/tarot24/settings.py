@@ -149,6 +149,15 @@ LOGIN_URL = 'account_login'
 LOGIN_REDIRECT_URL = 'post_list'
 LOGOUT_REDIRECT_URL = 'post_list'
 
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'yornarexy'
+EMAIL_HOST_PASSWORD = 'ustmsupvbgrxkmdy'
+EMAIL_USE_SSL = True
+DEFAULT_FROM_EMAIL = 'yornarexy@yandex.ru'
+
+SITE_URL = 'http://127.0.0.1:8000'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -175,5 +184,13 @@ SOCIALACCOUNT_PROVIDERS = {
             'secret': os.getenv('GOOGLE_SECRET'),
             'key': ''
         }
+    },
+    'yandex':{
+        'APP': {
+            'client_id': '123',
+            'secret': '456',
+            'key': ''
+            }
+        }
     }
-}
+
