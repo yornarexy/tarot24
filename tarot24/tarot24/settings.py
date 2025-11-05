@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.yandex',
 ]
 
 SITE_ID = 1
@@ -146,17 +147,15 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 LOGIN_URL = 'account_login'
-LOGIN_REDIRECT_URL = 'post_list'
-LOGOUT_REDIRECT_URL = 'post_list'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = 'account_login'
 
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = 'yornarexy'
-EMAIL_HOST_PASSWORD = 'ustmsupvbgrxkmdy'
+EMAIL_HOST_USER = 'sf.project.notifications'
+EMAIL_HOST_PASSWORD = 'rferxhmoizjfsidr'
 EMAIL_USE_SSL = True
-DEFAULT_FROM_EMAIL = 'yornarexy@yandex.ru'
-
-SITE_URL = 'http://127.0.0.1:8000'
+DEFAULT_FROM_EMAIL = 'sf.project.notifications@yandex.ru'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -172,8 +171,7 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_LOGIN_METHODS = {'username', 'email'}
 ACCOUNT_SESSION_REMEMBER = True
-ACCOUNT_FORMS = {'sign_up': 'sign_up.forms.MyCustomSignupForm',
-                 'sign_up': 'sign.models.BasicSignupForm'}
+ACCOUNT_FORMS = {'signup': 'sign_up.forms.MyCustomSignupForm'}
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
@@ -185,10 +183,10 @@ SOCIALACCOUNT_PROVIDERS = {
             'key': ''
         }
     },
-    'yandex':{
+    'yandex': {
         'APP': {
-            'client_id': '123',
-            'secret': '456',
+            'client_id': os.getenv('YANDEX_CLIENT'),
+            'secret': os.getenv('YANDEX_SECRET'),
             'key': ''
             }
         }

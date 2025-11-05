@@ -1,0 +1,13 @@
+{% extends "flatpages/default.html" %}
+
+{% block title %}Доступ закрыт:({% endblock title %}
+
+{% block content %}
+<div class="mt-3">
+<h2>Доступ закрыт!</h2>
+<h5>Для открытия доступа станьте автором!</h5>
+</div>
+
+<a class="btn btn-outline-success btn-sm" href="{% url 'upgrade' %}"> Стать автором!</a>
+
+{% endblock content %}

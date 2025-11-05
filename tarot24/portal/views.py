@@ -1,8 +1,10 @@
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views.generic import TemplateView
-from .models import Post
+from .models import Post, Category
 from .forms import PostForm
 from .filters import PostFilter
 
@@ -34,6 +36,7 @@ class PostCreate(PermissionRequiredMixin, CreateView):
     form_class = PostForm
     model = Post
     template_name = 'portal/post_edit.html'
+    permission_required = ('portal.add_post',)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -47,17 +50,6 @@ class PostCreate(PermissionRequiredMixin, CreateView):
             post.save()
         return super().form_valid(form)
 
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        group_subscribers = request_object('subscribers')
-        subscribers_users = group_subscribers.user_set.values_list('email', flat=True)
-        send_mail(
-            subject="Уведомления по подписке!",
-            message="Появилась новая публикация на портале Таро-24",
-            from_email="server@server.ru",
-            recipient_list=subscribers_users,
-        )
-        return response
 
 class PostUpdate(LoginRequiredMixin, UpdateView):
     form_class = PostForm
@@ -76,3 +68,14 @@ class PostDelete(DeleteView):
 
 class ProtectedView(LoginRequiredMixin, TemplateView):
     template_name = 'portal/post_edit.html'
+
+
+def category_list(request):
+    categories = Category.objects.all()
+    return render(request, 'category_list.html', {'categories': categories})
+
+@login_required
+def subscribe(request, pk):
+    category = Category.objects.get(pk=pk)
+    category.subscribers.add(request.user)
+    return redirect(request.META.get('HTTP_REFERER'))

@@ -11,5 +11,4 @@ urlpatterns = [
     path('confirm/logout/', TemplateView.as_view(template_name='sign_up/logout.html'), name='confirm_logout'),
     path('accounts/', include('allauth.urls')),
     path('upgrade/', upgrade_me, name='upgrade')
-
 ]

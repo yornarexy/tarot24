@@ -1,0 +1,21 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+{% load custom_tags %}
+
+{% block title %}Все публикации{% endblock title %}
+
+
+{% block content %}
+    <div class="container">
+    <h3>Все категории</h3><br>
+    {% if categories %}
+    {% for category in categories %}
+        <h4 class="mt-3">{{ category.name }}</h4>
+        {% if not user in category.subscribers.all %}
+        <a href="{% url 'subscribe' category.id %}" class="btn btn-outline-success btn-sm">Подписаться</a>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+</div>
+{% endblock content %}

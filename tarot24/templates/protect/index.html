@@ -6,10 +6,10 @@
 <h5> Здесь может содержаться персональная информация для каждого пользователя </h5>
 </div>
 
-<a class="btn btn-outline-danger btn-sm"<a href="{% url 'account_logout' %}">Выйти</a> </button>
+<a class="btn btn-outline-danger btn-sm" href="{% url 'account_logout' %}">Выйти</a>
 
 {% if is_not_author %}
-<button> <a href="sign/upgrade/"> Стать автором!</a> </button>
+<a class="btn btn-outline-success btn-sm" href="{% url 'upgrade' %}"> Стать автором!</a>
 {% endif %}
 
 {% endblock %}

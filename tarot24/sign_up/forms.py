@@ -1,7 +1,9 @@
 from allauth.account.forms import SignupForm
 from django import forms
+from django.conf import settings
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
+from django.core.mail import send_mail
 
 
 class SignUpUserForm(UserCreationForm):
@@ -36,6 +38,8 @@ class MyCustomSignupForm(SignupForm):
 
     def save(self, request):
         user = super().save(request)
+        basic_group = Group.objects.get(name='author')
+        basic_group.user_set.add(user)
         html_content = (
             f'<p>Привет, {user.username}!</p>'
             '<p>Вы успешно прошли регистрацию на '
